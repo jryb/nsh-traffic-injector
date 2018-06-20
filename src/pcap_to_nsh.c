@@ -167,11 +167,11 @@ static void packet_handler (u_char *args,
      */
     if (g_show_percent) {
         int percent = (g_total_pkts * 100)/g_pcap_total_pkt_cnt;
-	    if (percent - prev_percent >=1) {
-	        printf("\b\b\b%2d%%", percent);
-	        fflush(stdout);
-	        prev_percent = percent;
-	    }
+        if (percent - prev_percent >=1) {
+            printf("\b\b\b%2d%%", percent);
+            fflush(stdout);
+            prev_percent = percent;
+        }
     } else {
         if (g_total_pkts % 1000 == 0) {
             printf("\b\b\b\b\b\b\b\b\b\b\b\b%12d", g_total_pkts);
@@ -238,7 +238,7 @@ static void packet_handler (u_char *args,
     io[2].iov_len = GET_IP_TOTLEN(ip_hdr);
 
     PRINT_DEBUG("gre %zu, nsh %zu, payload %d\n",sizeof(struct fe_gre_base),
-		sizeof(struct nsh_hdr), GET_IP_TOTLEN(ip_hdr));
+                sizeof(struct nsh_hdr), GET_IP_TOTLEN(ip_hdr));
 
     memset(&msg, 0, sizeof(msg));
     msg.msg_iov = io;
@@ -299,7 +299,7 @@ int main(int argc, char *argv[]) {
             case 'c':
                 g_pkt_cnt = atoi(optarg);
                 break;
-	    case 'i':
+            case 'i':
                 dst_ip_addr = optarg;
                 break;
             default:
@@ -307,6 +307,12 @@ int main(int argc, char *argv[]) {
                 exit (1);
         }
     }
+
+    /*
+     * Initialize
+     */
+    init_nsh_socket();
+    printf("Socket initialize.\n");
 
     /*
      * Open pcap file to replay capture
@@ -326,19 +332,13 @@ int main(int argc, char *argv[]) {
     pcap_loop(cnt_handle, 0, total_packet_cnt, NULL);
 
     /*
-     * Initialize
-     */
-    init_nsh_socket();
-    printf("Socket initialize.\n");
-
-    /*
      * Start up packet loop
      */
     printf("Reading %s to send packets from....\n", pcap_file);
     if (g_show_percent) {
-	    printf("Progress:  0%%");
+        printf("Progress:  0%%");
     } else {
-	    printf("Pkts sent: %12d", g_total_pkts);
+        printf("Pkts sent: %12d", g_total_pkts);
     }
     fflush(stdout);
     pcap_loop(g_handle, 0, packet_handler, NULL);
