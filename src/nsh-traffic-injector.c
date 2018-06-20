@@ -1,5 +1,5 @@
 /*-
- * pcap_to_nsh - Add NSH Service chaining headers to pakcets from a PCAP file
+ * nsh-traffic-injector.c - Add NSH Service chaining headers to pakcets from a PCAP file
  *               to validate service functions
  *
  * Copyright (c) 2018, Jeff Rybczynski <jeff.rybczynski@gmail.com>
