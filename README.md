@@ -15,6 +15,9 @@ The following packages are required to build:
     gcc
     make
     libpcap-dev
+    
+    apt-get -y update
+    apt-get -y --fix-missing install make gcc libpcap-dev
 
 ### Build
 To build the code run make from the top directory:
